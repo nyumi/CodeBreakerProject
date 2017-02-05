@@ -13,6 +13,12 @@ function guess() {
     }
   
     document.getElementById('attempt').value = Numner(attempt) + 1;
+
+   if(getResults(input)) {
+       setMessage("You Win! :)");
+   }else if (attempt >= 10) {
+       setMessage("You Lose! :(");
+   }
 }
 
 //implement new functions here
@@ -42,11 +48,14 @@ function validateInput(guess) {
 
 function getResults(input) {
 
+    const correctLength = input.length;
     let icons = "";
-    for(let i = 0; i < input.length; i++) {
+    let correctNum = 0;
+    for(let i = 0; i < correctLength; i++) {
         const inputNum = Number(input.substr(i, 1));
         const answerNum = Number(answer.substr(i, 1));
         if (inputNum === answerNum) {
+            correctNum++;
             icons += '<span class="glyphicon glyphicon-ok"></span>';
         } else if (Math.abs(inputNum - answerNum)) {
             icons += '<span class="glyphicon glyphicon-transfer"></span>';
@@ -55,11 +64,14 @@ function getResults(input) {
         }
     }
     
+    
     const result = '<div class="row"><span class="col-md-6">'
             + input
             + '</span><div class="col-md-6">'
             + icons
             + '</div>';
     document.getElementById("results") = result;
+
+    return correctNum === correctLength;
 }
 
