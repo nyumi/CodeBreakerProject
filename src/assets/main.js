@@ -12,12 +12,14 @@ function guess() {
         return false;
     }
   
-    document.getElementById('attempt').value = Numner(attempt) + 1;
+    document.getElementById('attempt').value = Number(attempt) + 1;
 
    if(getResults(input)) {
        setMessage("You Win! :)");
    }else if (attempt >= 10) {
        setMessage("You Lose! :(");
+   }else {
+       setMessage("Incorrect, try again.");
    }
 }
 
@@ -75,3 +77,8 @@ function getResults(input) {
     return correctNum === correctLength;
 }
 
+function showAnswer(event) {
+    if(event) {
+        document.getElementById("code").innerHTML = answer;
+    }
+}
