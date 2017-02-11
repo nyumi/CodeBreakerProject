@@ -4,7 +4,7 @@ let attempt = document.getElementById('attempt');
 function guess() {
     let input = document.getElementById('user-guess');
     //add functionality to guess function here
-    if (answer == '' && attempt == '') {
+    if (answer.value == '' && attempt.value == '') {
         setHiddenFields();
     } 
 
@@ -12,7 +12,7 @@ function guess() {
         return false;
     }
   
-    document.getElementById('attempt').value = Number(attempt) + 1;
+    document.getElementById('attempt').value = Number(attempt.value) + 1;
 
    if(getResults(input)) {
        setMessage("You Win! :)");
@@ -31,8 +31,8 @@ function guess() {
 function setHiddenFields() {
     const MAX = 9999;
     const MIN = 0;
-    let answer = Math.floor( Math.random() * (MAX - MIN + 1) ) + MIN;
-    let attempt = 0;
+    answer.value = Math.floor( Math.random() * (MAX - MIN + 1) ) + MIN;
+    attempt.value = 0;
     let convertedAnswer = answer.toString();
     //answerが４桁か確認して、足りない分前半ゼロ埋め
     while (convertedAnswer.length < 4) {
@@ -54,29 +54,39 @@ function validateInput(guess) {
 
 function getResults(input) {
 
-    const correctLength = input.length;
+    const correctLength = input.value.length;
     let icons = "";
     let correctNum = 0;
+    
+    const result = document.createElement('div');
+    result.classList.add('row');
+    const span = document.createElement('span');
+    span.classList.add('col-md-6');
+    span.innerHTML = input.value;
+    result.appendChild(span);
+    
+    const result2 = document.createElement('div');
+    result2.classList.add('col-md-6');
+    result.appendChild(result2);
+    
     for(let i = 0; i < correctLength; i++) {
-        const inputNum = Number(input.substr(i, 1));
-        const answerNum = Number(answer.substr(i, 1));
+        const inputNum = Number(input.value.substr(i, 1));
+        const answerNum = Number(answer.value.substr(i, 1));
+
+        const icon = document.createElement('span');
+        icon.classList.add('glyphicon');
         if (inputNum === answerNum) {
             correctNum++;
-            icons += '<span class="glyphicon glyphicon-ok"></span>';
-        } else if (Math.abs(inputNum - answerNum)) {
-            icons += '<span class="glyphicon glyphicon-transfer"></span>';
+            icon.classList.add('glyphicon-ok');
+        } else if (Math.abs(inputNum - answerNum) === 1) {
+            icon.classList.add('glyphicon-transfer');
         } else {
-            icons += '<span class="glyphicon glyphicon-remove"></span>';
+            icon.classList.add('glyphicon-remove');
         }
+        result2.appendChild(icon);
     }
-    
-    
-    const result = '<div class="row"><span class="col-md-6">'
-            + input
-            + '</span><div class="col-md-6">'
-            + icons
-            + '</div>';
-    document.getElementById("results") = result;
+
+    document.getElementById("results").appendChild(result);
 
     return correctNum === correctLength;
 }
@@ -84,7 +94,7 @@ function getResults(input) {
 function showAnswer(event) {
     let codeLabel = document.getElementById("code")
     if(event) {
-        codeLabel.innerHTML = answer;
+        codeLabel.innerHTML = answer.value;
         codeLabel.classList.add('success');
     }
     else {
