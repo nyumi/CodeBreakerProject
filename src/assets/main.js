@@ -5,6 +5,7 @@ function guess() {
     let input = document.getElementById('user-guess');
     //add functionality to guess function here
     if (answer.value == '' && attempt.value == '') {
+        console.log("!!!!answer.value == ''!!!!!!!");
         setHiddenFields();
     } 
 
@@ -33,7 +34,7 @@ function setHiddenFields() {
     const MIN = 0;
     answer.value = Math.floor( Math.random() * (MAX - MIN + 1) ) + MIN;
     attempt.value = 0;
-    let convertedAnswer = answer.toString();
+    let convertedAnswer = answer.value.toString();
     //answerが４桁か確認して、足りない分前半ゼロ埋め
     while (convertedAnswer.length < 4) {
         convertedAnswer = "0" + convertedAnswer;
